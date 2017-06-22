@@ -1,16 +1,47 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using TheWorld.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace TheWorld
 {
     public class Startup
     {
+        private readonly IHostingEnvironment _env;
+        private readonly IConfigurationRoot _config;
+
+        public Startup(IHostingEnvironment env)
+        {
+            _env = env;
+
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(_env.ContentRootPath)
+                .AddJsonFile("config.json")
+                .AddEnvironmentVariables();
+
+            _config = builder.Build();
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(_config);
+
+            if (_env.IsDevelopment())
+            {
+                services.AddScoped<IMailService, DebugMailService>();
+            }
+            else
+            {
+                // Implement a real Mail Service
+            }
+
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -23,8 +54,27 @@ namespace TheWorld
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseDefaultFiles();
+            //app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UseMvc(MapRoutes);
+
+            //app.UseMvc(config =>
+            //    {
+            //        config.MapRoute(
+            //            name: "Default",
+            //            template: "{controller}/{action}/{id?}",
+            //            defaults: new { controller = "App", action = "Index" });
+            //    }
+            //);
+        }
+
+        private void MapRoutes(IRouteBuilder config)
+        {
+            config.MapRoute(
+                name: "Default",
+                template: "{controller}/{action}/{id?}",
+                defaults: new { controller = "App", action = "Index" });
         }
     }
 }
