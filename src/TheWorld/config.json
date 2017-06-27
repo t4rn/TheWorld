@@ -1,5 +1,8 @@
 {
   "MainSettings": {
     "ToAddress": "admin@theworld.com"
+  },
+  "ConnectionStrings": {
+    "Cs": "Server=(localdb)\\MSSQLLocalDB;Database=TheWorldDb;Trusted_Connection=true;MultipleActiveResultSets=true;"
   }
 }

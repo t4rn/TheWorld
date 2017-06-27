@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TheWorld.Services;
 using Microsoft.Extensions.Configuration;
+using TheWorld.Models;
 
 namespace TheWorld
 {
@@ -41,17 +42,33 @@ namespace TheWorld
                 // Implement a real Mail Service
             }
 
+            services.AddDbContext<WorldContext>();
+
+            services.AddScoped<IWorldRepository, WorldRepository>();
+
+            services.AddTransient<WorldContextSeedData>();
+
+            services.AddLogging();
+
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            ILoggerFactory loggerFactory,
+            WorldContextSeedData seeder)
         {
-            loggerFactory.AddConsole();
+            //loggerFactory.AddConsole();
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                loggerFactory.AddDebug(LogLevel.Information);
+            }
+            else
+            {
+                loggerFactory.AddDebug(LogLevel.Error);
             }
 
             //app.UseDefaultFiles();
@@ -59,14 +76,7 @@ namespace TheWorld
 
             app.UseMvc(MapRoutes);
 
-            //app.UseMvc(config =>
-            //    {
-            //        config.MapRoute(
-            //            name: "Default",
-            //            template: "{controller}/{action}/{id?}",
-            //            defaults: new { controller = "App", action = "Index" });
-            //    }
-            //);
+            seeder.InsertSeedData().Wait();
         }
 
         private void MapRoutes(IRouteBuilder config)
