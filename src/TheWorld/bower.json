@@ -4,6 +4,9 @@
   "dependencies": {
     "underscore": "~1.8.3",
     "jquery": "~3.2.1",
-    "jquery-validation-unobtrusive": "~3.2.6"
+    "jquery-validation-unobtrusive": "~3.2.6",
+    "bootstrap": "3.3.7",
+    "font-awsome": "~4.7.0",
+    "bootswatch": "3.3.7+2"
   }
 }
