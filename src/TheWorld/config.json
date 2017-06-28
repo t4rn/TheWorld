@@ -4,5 +4,8 @@
   },
   "ConnectionStrings": {
     "Cs": "Server=(localdb)\\MSSQLLocalDB;Database=TheWorldDb;Trusted_Connection=true;MultipleActiveResultSets=true;"
+  },
+  "Keys": {
+    "BingKey": "Aks96i83AKffd-PW169Aj_2oRcZN7VssXg8x3dSY99TpsdtgGq8uSklUf7wDQDBz" // <- should be in system environment variables
   }
 }
