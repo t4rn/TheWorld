@@ -8,12 +8,12 @@ using TheWorld.Models;
 
 namespace TheWorld.Services
 {
-    public class GeoCoordsServices
+    public class GeoCoordsBingService : IGeoCoordsService
     {
         private readonly IConfigurationRoot _config;
-        private readonly ILogger<GeoCoordsServices> _logger;
+        private readonly ILogger<GeoCoordsBingService> _logger;
 
-        public GeoCoordsServices(ILogger<GeoCoordsServices> logger, IConfigurationRoot config)
+        public GeoCoordsBingService(ILogger<GeoCoordsBingService> logger, IConfigurationRoot config)
         {
             _logger = logger;
             _config = config;

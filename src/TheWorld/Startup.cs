@@ -49,7 +49,7 @@ namespace TheWorld
 
             services.AddScoped<IWorldRepository, WorldRepository>();
 
-            services.AddTransient<GeoCoordsServices>();
+            services.AddScoped<IGeoCoordsService, GeoCoordsGoogleService>();
 
             services.AddTransient<WorldContextSeedData>();
 

@@ -14,13 +14,13 @@ namespace TheWorld.Controllers.Api
     [Route("/api/trips/{tripName}/stops")]
     public class StopsController : Controller
     {
-        private readonly GeoCoordsServices _coordsService;
+        private readonly IGeoCoordsService _coordsService;
         private readonly ILogger<StopsController> _logger;
         private readonly IWorldRepository _repository;
 
         public StopsController(IWorldRepository repository, 
             ILogger<StopsController> logger,
-            GeoCoordsServices coordsService)
+            IGeoCoordsService coordsService)
         {
             _repository = repository;
             _logger = logger;
@@ -75,6 +75,10 @@ namespace TheWorld.Controllers.Api
                                 Mapper.Map<StopViewModel>(newStop));
                         }
                     }
+                }
+                else
+                {
+                    return BadRequest(ModelState);
                 }
             }
             catch (Exception ex)
