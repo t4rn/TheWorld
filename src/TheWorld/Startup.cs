@@ -1,14 +1,16 @@
-﻿using System;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using TheWorld.Services;
-using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 using TheWorld.Models;
-using Newtonsoft.Json.Serialization;
-using AutoMapper;
+using TheWorld.Services;
 using TheWorld.ViewModels;
 
 namespace TheWorld
@@ -34,6 +36,33 @@ namespace TheWorld
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<WorldUser, IdentityRole>(config =>
+            {
+                config.User.RequireUniqueEmail = true;
+                config.Password.RequiredLength = 8;
+                config.Cookies.ApplicationCookie.LoginPath = "/Auth/Login";
+                config.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents()
+                {
+                    OnRedirectToLogin = async ctx =>
+                    {
+                        if (ctx.Request.Path.StartsWithSegments("/api") &&
+                        ctx.Response.StatusCode == 200)
+                        {
+                            // API call
+                            ctx.Response.StatusCode = 401;
+                        }
+                        else
+                        {
+                            // normal call
+                            ctx.Response.Redirect(ctx.RedirectUri);
+                        }
+
+                        await Task.Yield();
+                    }
+                };
+            })
+            .AddEntityFrameworkStores<WorldContext>();
+
             services.AddSingleton(_config);
 
             if (_env.IsDevelopment())
@@ -55,7 +84,14 @@ namespace TheWorld
 
             services.AddLogging();
 
-            services.AddMvc();
+            services.AddMvc(config =>
+            {
+                if (_env.IsProduction())
+                {
+                    config.Filters.Add(new RequireHttpsAttribute());
+                }
+            });
+
             // camel case is working by default, without the code belowe
                 //.AddJsonOptions(config =>
                 //{
@@ -89,6 +125,8 @@ namespace TheWorld
 
             //app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UseIdentity();
 
             app.UseMvc(MapRoutes);
 
