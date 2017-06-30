@@ -28,6 +28,7 @@ namespace TheWorld.Controllers.Api
         {
             try
             {
+                System.Threading.Thread.Sleep(300);
                 IEnumerable<Trip> results = _repository.GetTripsByUsername(User.Identity.Name);
 
                 return Ok(Mapper.Map<IEnumerable<TripViewModel>>(results));

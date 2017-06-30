@@ -34,6 +34,7 @@ namespace TheWorld.Controllers.Api
         {
             try
             {
+                System.Threading.Thread.Sleep(200);
                 Trip trip = _repository.GetTripByNameAndUser(tripName, User.Identity.Name);
                 if (trip != null)
                 {

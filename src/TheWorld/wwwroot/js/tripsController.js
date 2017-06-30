@@ -34,6 +34,8 @@
 			vm.isBusy = true;
 			vm.errorMessage = "";
 
+			console.log(vm.newTrip);
+
 			$http.post("/api/trips", vm.newTrip)
 			.then(function (response) {
 				// success
@@ -46,9 +48,6 @@
 			.finally(function () {
 				vm.isBusy = false;
 			});
-
-			vm.trips.push({ name: vm.newTrip.name, dateCreated: new Date() });
-			vm.newTrip = {};
 		};
 
 	}

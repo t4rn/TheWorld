@@ -8,6 +8,11 @@
     "bootstrap": "3.3.7",
     "font-awsome": "~4.7.0",
     "bootswatch": "3.3.7+2",
-    "angular": "1.6.4"
+    "angular": "1.6.4",
+    "angular-route": "1.6.4",
+    "travelmap": "~1.0.2"
+  },
+  "resolutions": {
+    "angular": "1.6.5-build.5413+sha.62c9d1d"
   }
 }
