@@ -2,7 +2,7 @@
   "dependencies": {
     "Microsoft.NETCore.App": {
       "version": "1.0.1",
-      "type": "platform"
+      //"type": "platform"
     },
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
@@ -55,14 +55,22 @@
     }
   },
 
+  "runtimes": {
+    "win7-x64": {} 
+  },
+
   "publishOptions": {
     "include": [
       "wwwroot",
-      "web.config"
+      "web.config",
+      "config.json",
+      "Views"
     ]
   },
 
   "scripts": {
+    "prepublish": [ "npm install", "bower install" ],
+    "prepare": "gulp minify",
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   }
 }
