@@ -1,11 +1,14 @@
 ﻿<div class="col-md-6 col-md-offset-3">
-    <div class="text-danger" ng-show="vm.errorMessage">{{ vm.errorMessage }}</div>
+    <div class="alert alert-danger" ng-show="vm.errorMessage">{{ vm.errorMessage }}</div>
+    <div class="alert alert-success" role="alert" ng-show="vm.successMessage">{{ vm.successMessage }}</div>
     <wait-cursor display-when="vm.isBusy"></wait-cursor>
     <table class="table table-responsive table-striped">
         <tr ng-repeat="trip in vm.trips">
             <td>{{ trip.name }}</td>
             <td>{{ trip.dateCreated | date:'yyyy-MM-dd' }}</td>
             <td><a ng-href="#!editor/{{ trip.name }}" class="btn btn-sm btn-primary">Manage</a></td>
+            <td><a class="btn btn-sm btn-warning" ng-click="vm.deleteTrip($index)">Delete</a></td>
+
         </tr>
     </table>
 

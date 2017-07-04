@@ -32,10 +32,12 @@
             <tr>
                 <th>Location</th>
                 <th>Arrival</th>
+                <th>Action</th>
             </tr>
             <tr ng-repeat="stop in vm.stops">
                 <td>{{ stop.name }}</td>
                 <td>{{ stop.arrival | date:shortDate }}</td>
+                <td><a class="btn btn-warning" ng-click="vm.deleteStop($index)">Delete</a></td>
             </tr>
         </table>
 

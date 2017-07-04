@@ -65,5 +65,20 @@ namespace TheWorld.Controllers.Api
 
             return BadRequest(ModelState);
         }
+
+        [HttpDelete("{tripName}")]
+        public async Task<IActionResult> Delete(string tripName)
+        {
+            _repository.DeleteTrip(tripName, User.Identity.Name);
+
+            if (await _repository.SaveChangesAsync())
+            {
+                return Ok($"Trip '{tripName}' deleted.");
+            }
+            else
+            {
+                return BadRequest("Failed to delete trip.");
+            }
+        }
     }
 }

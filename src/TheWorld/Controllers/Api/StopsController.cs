@@ -97,5 +97,29 @@ namespace TheWorld.Controllers.Api
 
             return BadRequest("Failed to save Stop");
         }
+
+        [HttpDelete("{stopName}")]
+        public async Task<IActionResult> Delete(string tripName, string stopName)
+        {
+            try
+            {
+                _repository.DeleteStop(tripName, stopName, User.Identity.Name);
+
+                if (await _repository.SaveChangesAsync())
+                {
+                    return Ok($"Stop '{stopName}' deleted.");
+                }
+                else
+                {
+                    return BadRequest("Failed to delete stop.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Failed to delete Stop: {0}", ex);
+            }
+
+            return BadRequest("Failed to delete Stop");
+        }
     }
 }

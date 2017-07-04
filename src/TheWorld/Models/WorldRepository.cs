@@ -33,6 +33,33 @@ namespace TheWorld.Models
             _context.Add(trip);
         }
 
+        public void DeleteStop(string tripName, string stopName, string username)
+        {
+            Trip trip = GetTripByNameAndUser(tripName, username);
+            if (trip != null)
+            {
+                Stop stop = trip.Stops.Where(x => x.Name == stopName).FirstOrDefault();
+                if (stop != null)
+                {
+                    _context.Stops.Remove(stop);
+                }
+            }
+        }
+
+        private Stop GetStopByName(string stopName)
+        {
+            return _context.Stops.Where(x => x.Name == stopName).FirstOrDefault();
+        }
+
+        public void DeleteTrip(string tripName, string username)
+        {
+            Trip trip = GetTripByNameAndUser(tripName, username);
+            if (trip != null)
+            {
+                _context.Remove(trip);
+            }
+        }
+
         public IEnumerable<Trip> GetAllTrips()
         {
             _logger.LogInformation("Getting All Trips from the Database");
