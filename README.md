@@ -2,6 +2,6 @@
 Web App with ASP.NET Core, MVC 6, EF Core and Angular.
 
 
-To initialize DB:
+To initialize DB (in cmd):
 
-`dotnet ef database update`
+`C:\TheWorld\src\TheWorld>dotnet ef database update`
